@@ -4,18 +4,21 @@
 
 using namespace std;
 
-string PATH = "../logs/trace";
+string PATH_REF = "../reference_strings/";
 
 int main(int argc, char **argv) {
-    if (argc != 3 || atoi(argv[1]) < 1 || atoi(argv[1]) > 4 || atoi(argv[2]) != 4 || atoi(argv[2]) != 8 || atoi(argv[2]) != 16 || atoi(argv[2]) != 32) {
-        cout << "Forma de executar: main <numero do arquivo de log (entre 1 e 4)> <numero de frames livres (4, 8, 16, 32)>";
+    if (argc != 4 || (atoi(argv[2]) != 4 && atoi(argv[2]) != 8 && atoi(argv[2]) != 16 && atoi(argv[2]) != 32) || (atoi(argv[3]) != 0 && atoi(argv[3]) != 1)) {
+        cout << "Forma de executar: main.exe <nome da reference string> <numero de frames livres (4, 8, 16, 32)> <algoritmo de substituicao (0 = OPT, 1 = LRU)\n";
         return 0;
     }
 
     int *referenceString = new int[atoi(argv[2])];
     string hexStr;
-    ifstream log(PATH+argv[1]);
-    if (!log.is_open()) return -1;
+    ifstream log(PATH_REF+argv[1]);
+    if (!log.is_open()) {
+        cout << "Falha ao abrir o arquivo\n";
+        return -1;
+    }
     
     while(getline(log, hexStr)) {
         unsigned int addr = stoul(hexStr, nullptr, 16);
