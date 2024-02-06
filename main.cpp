@@ -6,9 +6,9 @@ using namespace std;
 
 string PATH_REF = "../reference_strings/";
 
-unsigned long long int OPT(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
+unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
     cout << "OPT!\n";
-    unsigned long long int pageFaults = 0;
+    unsigned int pageFaults = 0;
     int *framesWorthness = new int[framesT]; 
 
     for (int pag = 0; pag < refStrT; pag++) {
@@ -20,9 +20,9 @@ unsigned long long int OPT(unsigned int *frames, int framesT, unsigned int *refe
     return pageFaults;
 }
 
-unsigned long long int LRU(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
+unsigned int LRU(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
     cout << "LRU!\n";
-    unsigned long long int pageFaults = 0;
+    unsigned int pageFaults = 0;
     
     return pageFaults;
 }
