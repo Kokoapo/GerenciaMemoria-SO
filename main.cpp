@@ -6,12 +6,18 @@ using namespace std;
 
 string PATH_REF = "../reference_strings/";
 
-void OPT(unsigned int *frames, unsigned int *referenceString, int refStrT) {
+unsigned long long int OPT(unsigned int *frames, unsigned int *referenceString, int refStrT) {
     cout << "OPT!\n";
+    unsigned long long int pageFaults = 0;
+    
+    return pageFaults;
 }
 
-void LRU(unsigned int *frames, unsigned int *referenceString, int refStrT) {
+unsigned long long int LRU(unsigned int *frames, unsigned int *referenceString, int refStrT) {
     cout << "LRU!\n";
+    unsigned long long int pageFaults = 0;
+    
+    return pageFaults;
 }
 
 int main(int argc, char **argv) {
