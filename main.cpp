@@ -6,14 +6,59 @@ using namespace std;
 
 string PATH_REF = "../reference_strings/";
 
-unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
-    cout << "OPT!\n";
-    unsigned int pageFaults = 0;
-    int *framesWorthness = new int[framesT]; 
+int OPTPontos(unsigned int end, int posI, unsigned int *referenceString, int refStrT) {
+    int pontos = 1;
 
-    for (int pag = 0; pag < refStrT; pag++) {
-        for (int frame = 0; frame < framesT; frame++) {
-        
+    for (int i = posI; i < refStrT; i++) {
+        if (referenceString[i] == end)
+            break;
+        pontos++;
+    }
+
+    return pontos;
+}
+
+unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
+    unsigned int pageFaults = 0;
+    int *framesPontos = new int[framesT];
+    for (int i = 0; i < framesT; i++)
+        framesPontos[i] = 0; 
+
+    /* Para cada endereço na referenceString: 
+        Verificar se o frame está em frames
+            se encontrar NULL:
+                adicionar endereço em frames[i]
+                calcular framesPontos[endereço pos]
+                incrementar pageFaults
+            se não estiver:
+                substituir frames[indice de maior valor em framesPontos] por endereço
+                calcular framesPontos[indice de maior valor em framesPontos]
+                incrementar pageFaults
+    */
+
+    int maiorPontos = 0x80000000;
+    int frame = -1;
+    for (int e = 0; e < refStrT; e++) {
+        bool miss = true;
+        for (int f = 0; f < framesT; f++) {
+            if (frames[f] == 0) {
+                frame = f;
+                break;
+            } else if (frames[f] == referenceString[e]) {
+                miss = false;
+                break;
+            }
+
+            if (maiorPontos < framesPontos[f]) {
+                maiorPontos = framesPontos[f];
+                frame = f;
+            }
+        }
+
+        if (miss) {
+            frames[frame] = referenceString[e];
+            framesPontos[frame] = OPTPontos(referenceString[e], e+1, referenceString, refStrT);
+            pageFaults++;
         }
     }
 
