@@ -95,16 +95,18 @@ int main(int argc, char **argv) {
     }
     log.close();
 
+    unsigned int resultado;
     switch (atoi(argv[3])) {
         case 0:
-            OPT(frames, atoi(argv[2]), referenceString, refStrT);
+            resultado = OPT(frames, atoi(argv[2]), referenceString, refStrT);
             break;
         case 1:
-            LRU(frames, atoi(argv[2]), referenceString, refStrT);
+            resultado = LRU(frames, atoi(argv[2]), referenceString, refStrT);
             break;
         default:
             break;
     }
 
+    cout << "# de Page Faults: " << (int)resultado << endl;
     return 0;
 }
