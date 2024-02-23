@@ -35,10 +35,18 @@ int main(int argc, char **argv) {
     }
 
     refT = (max_log * refT) / 100;
+    ref << std::hex;
+    unsigned int ultimo = 0xFFFFFFFF;
     for (int i = 0; i < refT; i++) {
-        string addr;
-        getline(log, addr);
-        ref << addr << endl;
+        string end;
+        getline(log, end);
+	unsigned int addr = stoul(end, nullptr, 16);
+
+	addr = addr & 0xFFFFF000;
+	if (addr != ultimo) {
+	     ref << addr << endl;
+	     ultimo = addr;
+	}
     }
 
     log.close();

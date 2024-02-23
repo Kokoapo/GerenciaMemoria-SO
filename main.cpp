@@ -24,18 +24,6 @@ unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceStrin
     for (int i = 0; i < framesT; i++)
         framesPontos[i] = 0; 
 
-    /* Para cada endereço na referenceString: 
-        Verificar se o frame está em frames
-            se encontrar NULL:
-                adicionar endereço em frames[i]
-                calcular framesPontos[endereço pos]
-                incrementar pageFaults
-            se não estiver:
-                substituir frames[indice de maior valor em framesPontos] por endereço
-                calcular framesPontos[indice de maior valor em framesPontos]
-                incrementar pageFaults
-    */
-
     int maiorPontos = 0x80000000;
     int frame = -1;
     for (int e = 0; e < refStrT; e++) {
@@ -45,7 +33,8 @@ unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceStrin
                 frame = f;
                 break;
             } else if (frames[f] == referenceString[e]) {
-                miss = false;
+		framesPontos[f] = OPTPontos(referenceString[e], e+1, referenceString, refStrT);
+		miss = false;
                 break;
             }
 
@@ -89,9 +78,7 @@ int main(int argc, char **argv) {
     
     int refStrT = 0;
     while(getline(log, hexStr)) {
-        unsigned int addr = stoul(hexStr, nullptr, 16);
-        unsigned int pagina = addr & 0xFFFFF000;
-        referenceString[refStrT++] = pagina;
+        referenceString[refStrT++] = stoul(hexStr, nullptr, 16);
     }
     log.close();
 
