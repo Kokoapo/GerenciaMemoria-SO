@@ -1,65 +1,10 @@
-#include <iostream>
 #include <fstream>
 #include <string>
+#include "page-algorithms.h"
 
 using namespace std;
 
 string PATH_REF = "../reference_strings/";
-
-int OPTPontos(unsigned int end, int posI, unsigned int *referenceString, int refStrT) {
-    int pontos = 1;
-
-    for (int i = posI; i < refStrT; i++) {
-        if (referenceString[i] == end)
-            break;
-        pontos++;
-    }
-
-    return pontos;
-}
-
-unsigned int OPT(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
-    unsigned int pageFaults = 0;
-    int *framesPontos = new int[framesT];
-    for (int i = 0; i < framesT; i++)
-        framesPontos[i] = 0; 
-
-    int maiorPontos = 0x80000000;
-    int frame = -1;
-    for (int e = 0; e < refStrT; e++) {
-        bool miss = true;
-        for (int f = 0; f < framesT; f++) {
-            if (frames[f] == 0) {
-                frame = f;
-                break;
-            } else if (frames[f] == referenceString[e]) {
-		framesPontos[f] = OPTPontos(referenceString[e], e+1, referenceString, refStrT);
-		miss = false;
-                break;
-            }
-
-            if (maiorPontos < framesPontos[f]) {
-                maiorPontos = framesPontos[f];
-                frame = f;
-            }
-        }
-
-        if (miss) {
-            frames[frame] = referenceString[e];
-            framesPontos[frame] = OPTPontos(referenceString[e], e+1, referenceString, refStrT);
-            pageFaults++;
-        }
-    }
-
-    return pageFaults;
-}
-
-unsigned int LRU(unsigned int *frames, int framesT, unsigned int *referenceString, int refStrT) {
-    cout << "LRU!\n";
-    unsigned int pageFaults = 0;
-    
-    return pageFaults;
-}
 
 int main(int argc, char **argv) {
     if (argc != 4 || (atoi(argv[2]) != 4 && atoi(argv[2]) != 8 && atoi(argv[2]) != 16 && atoi(argv[2]) != 32) || (atoi(argv[3]) != 0 && atoi(argv[3]) != 1)) {
@@ -68,6 +13,9 @@ int main(int argc, char **argv) {
     }
 
     unsigned int *frames = new unsigned int[atoi(argv[2])];
+    for(int i = 0; i < atoi(argv[2]); i++) {
+        frames[i] = 0xFFFFFFFF;
+    }
     unsigned int *referenceString = new unsigned int[6287037];
     string hexStr;
     ifstream log(PATH_REF+argv[1]);
