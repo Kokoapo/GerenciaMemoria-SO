@@ -32,8 +32,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    int max_log=count_lines(log), logN = atoi(argv[1]), refT = atoi(argv[2]);
-    cout << max_log;
+    int max_log = count_lines(log), logN = atoi(argv[1]), refT = atoi(argv[2]);
+
     refT = (max_log * refT) / 100;
     ref << std::hex;
     unsigned int ultimo = 0xFFFFFFFF;
